@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
+import { ProductModule } from './routes/products/products.module';
 
 @Module({
-  imports: [],
-  controllers: [],
-  providers: [],
+  imports: [ProductModule],
 })
 export class AppModule {}
