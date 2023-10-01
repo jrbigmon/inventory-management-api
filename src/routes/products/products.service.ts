@@ -3,12 +3,17 @@ import { ProductGatewayInterface } from './gateways/product-gateway.interface';
 import { Product } from './entities/products.entity';
 import { ProductCreateDto } from './dto/product-create.dto';
 import { Filter } from '../../interfaces/filters.interface';
+import { ValidationServices } from '../../validations/validations-services';
 
 @Injectable()
 export class ProductService {
   constructor(private readonly productGateway: ProductGatewayInterface) {}
 
+  private validationService: ValidationServices;
+
   public async create(product: ProductCreateDto): Promise<Product> {
+    this.validationService = new ValidationServices(ProductCreateDto);
+
     const productToCreate = new Product(
       product?.name,
       product?.price,
@@ -17,12 +22,10 @@ export class ProductService {
       product?.expired,
     );
 
-    if (!productToCreate?.name) {
-      throw new Error('Name must be provided');
-    }
+    const error = await this.validationService.validate(productToCreate);
 
-    if (!productToCreate?.price) {
-      throw new Error('Price must be provided');
+    if (error) {
+      throw new Error(error);
     }
 
     return await this.productGateway.create(productToCreate);
@@ -43,7 +46,7 @@ export class ProductService {
           r.imgURL,
           r.expired,
           r.createdAt,
-          r.updateAt,
+          r.updatedAt,
           r.deletedAt,
           r.id,
         ),

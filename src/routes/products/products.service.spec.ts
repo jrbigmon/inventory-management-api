@@ -28,7 +28,7 @@ describe('ProductService', () => {
       expect(result).toMatchObject(body);
       expect(result.id).not.toBeNull();
       expect(result.createdAt).not.toBeNull();
-      expect(result.updateAt).not.toBeNull();
+      expect(result.updatedAt).not.toBeNull();
     });
 
     it('should be return a exception error when name is not provided', async () => {
@@ -37,9 +37,9 @@ describe('ProductService', () => {
       try {
         result = await service.create({ ...body, name: null });
       } catch (error) {
-        expect(error.message).toBe('Name must be provided');
+        expect(error.message).toBe('name should not be empty');
       } finally {
-        expect(result).toBeNull();
+        expect(result).toBe(null);
       }
     });
 
@@ -49,9 +49,9 @@ describe('ProductService', () => {
       try {
         result = await service.create({ ...body, price: null });
       } catch (error) {
-        expect(error.message).toBe('Price must be provided');
+        expect(error.message).toBe('price should not be empty');
       } finally {
-        expect(result).toBeNull();
+        expect(result).toBe(null);
       }
     });
   });

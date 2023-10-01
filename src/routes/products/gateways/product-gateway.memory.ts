@@ -12,7 +12,7 @@ export class ProductGatewayMemory implements ProductGatewayInterface {
 
     value.id = randomUUID();
     value.createdAt = instantDate;
-    value.updateAt = instantDate;
+    value.updatedAt = instantDate;
 
     this.products.push(value);
 
