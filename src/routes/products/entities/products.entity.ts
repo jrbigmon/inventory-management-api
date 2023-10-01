@@ -1,9 +1,12 @@
+import { differenceInDays } from 'date-fns';
+
 export class Product {
   constructor(
     private _name: string,
     private _price: number,
     private _description?: string,
     private _imgURL?: string,
+    private _expired?: Date,
     private _createdAt?: Date,
     private _updatedAt?: Date,
     private _deletedAt?: Date,
@@ -12,6 +15,10 @@ export class Product {
 
   get id(): string {
     return this._id;
+  }
+
+  set id(value: string) {
+    this._id = value;
   }
 
   set name(value: string) {
@@ -62,7 +69,27 @@ export class Product {
     return this._createdAt;
   }
 
+  set createdAt(value: Date) {
+    this._createdAt = value;
+  }
+
   get updateAt(): Date {
     return this._updatedAt;
+  }
+
+  set updateAt(value: Date) {
+    this._updatedAt = value;
+  }
+
+  get expired(): Date {
+    return this._expired;
+  }
+
+  set expired(value: Date) {
+    this._expired = value;
+  }
+
+  getExpirationDateInDays(): number {
+    return differenceInDays(new Date(this.expired), new Date());
   }
 }
