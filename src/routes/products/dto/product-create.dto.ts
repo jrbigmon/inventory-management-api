@@ -3,4 +3,5 @@ export class ProductCreateDto {
   price: number;
   description?: string;
   imgURL?: string;
+  expired?: Date;
 }
