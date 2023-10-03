@@ -8,8 +8,6 @@ export class ValidationServices {
 
     const valueValidated = Object.assign(dtoToValidate, value);
 
-    console.log(valueValidated);
-
     try {
       await validateOrReject(valueValidated);
     } catch (errors) {

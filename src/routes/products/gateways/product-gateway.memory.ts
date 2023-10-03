@@ -62,13 +62,18 @@ export class ProductGatewayMemory implements ProductGatewayInterface {
   async findAll(filters?: Filter<Product>): Promise<Product[]> {
     if (filters && Object.keys(filters)?.length) {
       return this.products.filter((p) => {
-        let isMatch = true;
-
         for (const key in filters) {
-          if (!String(p[key])?.includes(filters[key])) isMatch = false;
+          if (p[key]) {
+            const valueInMemory = String(p[key])?.toLowerCase();
+            const valueInFilter = String(filters[key])?.toLowerCase();
+
+            if (!valueInMemory?.includes(valueInFilter)) {
+              return false;
+            }
+          }
         }
 
-        return isMatch;
+        return true;
       });
     }
 

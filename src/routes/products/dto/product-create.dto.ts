@@ -25,5 +25,5 @@ export class ProductCreateDto {
 
   @ValidateIf((_, value) => value !== undefined && value !== null)
   @IsDate()
-  expired?: Date;
+  expiredAt?: Date;
 }

@@ -6,14 +6,18 @@ export class Product {
     public price: number,
     public description?: string,
     public imgURL?: string,
-    public expired?: Date,
+    public expiredAt?: Date,
     public createdAt?: Date,
     public updatedAt?: Date,
     public deletedAt?: Date,
     public id?: string,
   ) {}
 
-  getExpirationDateInDays(): number {
-    return differenceInDays(new Date(this.expired), new Date());
+  public getExpirationDateInDays(): number {
+    return differenceInDays(new Date(this.expiredAt), new Date());
+  }
+
+  public isExpired(): boolean {
+    return this.getExpirationDateInDays() <= 0;
   }
 }

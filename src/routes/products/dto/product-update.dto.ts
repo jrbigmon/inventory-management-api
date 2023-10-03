@@ -3,5 +3,5 @@ export class ProductUpdateDto {
   price?: number;
   description?: string;
   imgURL?: string;
-  expired?: Date;
+  expiredAt?: Date;
 }

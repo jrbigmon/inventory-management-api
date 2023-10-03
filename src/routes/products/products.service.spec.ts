@@ -10,7 +10,7 @@ describe('ProductService', () => {
     name: 'Cadeira',
     price: 50.99,
     description: 'Cadeira de escritório branca.',
-    expired: new Date('2022-12-01 00:00:00'),
+    expiredAt: new Date('2022-12-01 00:00:00'),
   };
 
   let lastIdCreated: string;
@@ -58,13 +58,25 @@ describe('ProductService', () => {
 
   describe('ProductService.findAll', () => {
     it('should be return a list of products', async () => {
-      const result = await service.findAll(undefined, true);
+      const result = await service.findAll({ expired: true });
 
       expect(result?.length).toBe(1);
     });
 
     it('should be return a list of products empty', async () => {
-      const result = await service.findAll(undefined, false);
+      const result = await service.findAll({ expired: false });
+
+      expect(result?.length).toBe(0);
+    });
+
+    it(`should be return a list of products with name ${body.name}`, async () => {
+      const result = await service.findAll({ name: 'Cadei', expired: true });
+
+      expect(result?.length).toBe(1);
+    });
+
+    it('should be return a list of products empty when name is not match', async () => {
+      const result = await service.findAll({ name: 'Mesa', expired: true });
 
       expect(result?.length).toBe(0);
     });

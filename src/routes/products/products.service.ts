@@ -5,6 +5,10 @@ import { ProductCreateDto } from './dto/product-create.dto';
 import { Filter } from '../../interfaces/filters.interface';
 import { ValidationServices } from '../../validations/validations-services';
 
+export interface ProductFilter extends Product {
+  expired: boolean;
+}
+
 @Injectable()
 export class ProductService {
   constructor(private readonly productGateway: ProductGatewayInterface) {}
@@ -19,7 +23,7 @@ export class ProductService {
       product?.price,
       product?.description,
       product?.imgURL,
-      product?.expired,
+      product?.expiredAt,
     );
 
     const error = await this.validationService.validate(productToCreate);
@@ -31,10 +35,7 @@ export class ProductService {
     return await this.productGateway.create(productToCreate);
   }
 
-  public async findAll(
-    filters?: Filter<Product>,
-    expired?: boolean,
-  ): Promise<Product[]> {
+  public async findAll(filters?: Filter<ProductFilter>): Promise<Product[]> {
     const resultsInDb = await this.productGateway.findAll(filters);
 
     const products = resultsInDb?.map(
@@ -44,7 +45,7 @@ export class ProductService {
           r.price,
           r.description,
           r.imgURL,
-          r.expired,
+          r.expiredAt,
           r.createdAt,
           r.updatedAt,
           r.deletedAt,
@@ -52,11 +53,8 @@ export class ProductService {
         ),
     );
 
-    if (!expired) {
-      return products.filter(
-        (product) => product.getExpirationDateInDays() > 0,
-      );
-    }
+    if (!filters?.expired)
+      return products.filter((product) => !product.isExpired());
 
     return products;
   }
