@@ -7,9 +7,9 @@ describe('ProductService', () => {
   let service: ProductService;
 
   const body: ProductCreateDto = {
-    name: 'Cadeira',
+    name: 'Chair',
     price: 50.99,
-    description: 'Cadeira de escritório branca.',
+    description: 'office chair',
     expiredAt: new Date('2022-12-01 00:00:00'),
   };
 
@@ -70,13 +70,13 @@ describe('ProductService', () => {
     });
 
     it(`should be return a list of products with name ${body.name}`, async () => {
-      const result = await service.findAll({ name: 'Cadei', expired: true });
+      const result = await service.findAll({ name: 'Chair', expired: true });
 
       expect(result?.length).toBe(1);
     });
 
     it('should be return a list of products empty when name is not match', async () => {
-      const result = await service.findAll({ name: 'Mesa', expired: true });
+      const result = await service.findAll({ name: 'Table', expired: true });
 
       expect(result?.length).toBe(0);
     });
@@ -87,6 +87,17 @@ describe('ProductService', () => {
       const result = await service.findById(lastIdCreated);
 
       expect(result).not.toBeNull();
+    });
+  });
+
+  describe('ProductService.update', () => {
+    it('should update a product', async () => {
+      const newName = 'Table';
+      const result = await service.update(lastIdCreated, { name: newName });
+      const updatedProduct = await service.findById(lastIdCreated);
+
+      expect(updatedProduct.name).toBe(newName);
+      expect(result).toBe(true);
     });
   });
 });
