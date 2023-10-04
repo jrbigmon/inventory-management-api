@@ -30,7 +30,11 @@ export class ProductGatewayMemory implements ProductGatewayInterface {
       throw new Error(PRODUCT_NOT_FOUND);
     }
 
-    this.products[productToUpdate] = value;
+    for (const key in value) {
+      if (value[key]) {
+        this.products[productToUpdate][key] = value[key];
+      }
+    }
 
     return true;
   }

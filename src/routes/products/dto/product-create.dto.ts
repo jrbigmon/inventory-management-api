@@ -6,6 +6,9 @@ import {
   ValidateIf,
 } from 'class-validator';
 
+const validateIfCallback = (object: object, value: unknown) =>
+  value !== undefined && value !== null;
+
 export class ProductCreateDto {
   @IsString()
   @IsNotEmpty()
@@ -15,15 +18,15 @@ export class ProductCreateDto {
   @IsNotEmpty()
   price: number;
 
-  @ValidateIf((_, value) => value !== undefined && value !== null)
+  @ValidateIf(validateIfCallback)
   @IsString()
   description?: string;
 
-  @ValidateIf((_, value) => value !== undefined && value !== null)
+  @ValidateIf(validateIfCallback)
   @IsString()
   imgURL?: string;
 
-  @ValidateIf((_, value) => value !== undefined && value !== null)
+  @ValidateIf(validateIfCallback)
   @IsDate()
   expiredAt?: Date;
 }
